@@ -1,0 +1,7 @@
+History.txt
+Manifest.txt
+README.txt
+Rakefile
+bin/pdf-stamper
+lib/pdf-stamper.rb
+test/test_pdf-stamper.rb
