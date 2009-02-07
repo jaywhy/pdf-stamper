@@ -2,13 +2,13 @@ require 'rubygems'
 require 'rake'
 
 spec = Gem::Specification.new do |s|
-  s.name 		    = "pdf_stamper"
+  s.name 		    = "pdf-stamper"
   s.version 		= "0.2.0"
   s.author     		= "Jason Yates"
   s.email       	= "jaywhy@gmail.com"
   s.homepage    	= "http://pdf-stamper.rubyforge.org/"
   s.platform    	= Gem::Platform::RUBY
-  s.summary     	= "PDF::Stamper provides an interface into iText's PdfStamper allowing for the editing of existing PDF's as templates."
+  s.summary     	= "Super cool PDF templates using iText's PdfStamper."
   s.files		= FileList["{ext,lib,spec}/**/*"].exclude("rdoc").to_a
   s.require_path 	= "lib"
   s.has_rdoc		= true

@@ -1,99 +1,52 @@
 # = pdf/stamper.rb -- PDF template stamping.
 #
-#  Copyright (c) 2007 Jason Yates
+#  Copyright (c) 2007-2009 Jason Yates
 
+require 'rbconfig'
 require 'fileutils'
-require 'java'
 require 'tmpdir'
 
 include FileUtils
 
-include_class 'java.io.FileOutputStream'
-include_class 'java.io.ByteArrayOutputStream'
-include_class 'com.lowagie.text.pdf.AcroFields'
-include_class 'com.lowagie.text.pdf.PdfReader'
-include_class 'com.lowagie.text.pdf.PdfStamper'
-include_class 'com.lowagie.text.Image'
-include_class 'com.lowagie.text.Rectangle'
-
-# PDF::Stamper provides an interface into iText's PdfStamper allowing for
-# the editing of existing PDF's as templates.  Unlike the available PDF 
-# generators, PDF::Stamper, via RJB and iText, allows you to edit
-# existing PDF's and use them as templates.
-#
-# == Creation of templates
-#
-# Templates currently can only be created using Adobe LiveCycle
-# Designer which comes with the lastest versions of Adobe Acrobat
-# Professional.  Using LiveCycle Designer you can create a form and
-# add textfield's for text and button's for images.
-#
 module PDF
-  # PDF::Stamper
-  #
-  # == Example
-  #
-  # pdf = PDF::Stamper.new("my_template.pdf")
-  # pdf.text :first_name, "Jason"
-  # pdf.text :last_name, "Yates"
-  # pdf.image :photo, "photo.jpg"
-  # pdf.save_as "my_output"
   class Stamper
+    VERSION = "0.3.0"
     
-    def initialize(pdf = nil)
-      template(pdf) if ! pdf.nil?
+    if RUBY_PLATFORM =~ /java/ # ifdef to check if your using JRuby
+      require 'pdf/stamper/jruby'
+    else
+      require 'pdf/stamper/rjb'
     end
+    # PDF::Stamper provides an interface into iText's PdfStamper allowing for the
+    # editing of existing PDF's as templates. PDF::Stamper is not a PDF generator,
+    # it allows you to edit existing PDF's and use them as templates.
+    #
+    # == Creation of templates
+    #
+    # Templates currently can only be created using Adobe LiveCycle
+    # Designer which comes with the lastest versions of Adobe Acrobat
+    # Professional.  Using LiveCycle Designer you can create a form and
+    # add textfield's for text and button's for images.
+    #
+    # == Example
+    #
+    # pdf = PDF::Stamper.new("my_template.pdf")
+    # pdf.text :first_name, "Jason"
+    # pdf.text :last_name, "Yates"
+    # pdf.image :photo, "photo.jpg"
+    # pdf.save_as "my_output"
     
-    def template(template)
-      # NOTE I'd rather use a ByteArrayOutputStream.  However I
-      # couldn't get it working.  Patches welcome.
-      #@tmp_path = File.join(Dir::tmpdir, 'pdf-stamper-' + rand(10000).to_s + '.pdf')
-      reader = PdfReader.new(template)
-      @baos = ByteArrayOutputStream.new
-      @stamp = PdfStamper.new(reader, @baos)#FileOutputStream.new(@tmp_path))
-      @form = @stamp.getAcroFields()
-    end
-
     # Set a textfield defined by key and text to value.
     def text(key, value)
       @form.setField(key.to_s, value.to_s) # Value must be a string or itext will error.
     end
-
-    # Set a button field defined by key and replaces with an image.
-    def image(key, image_path)
-      # Idea from here http://itext.ugent.be/library/question.php?id=31 
-      # Thanks Bruno for letting me know about it.
-      img = Image.getInstance(image_path)
-      img_field = @form.getFieldPositions(key.to_s)
- 
-      rect = Rectangle.new(img_field[1], img_field[2], img_field[3], img_field[4])
-      img.scaleToFit(rect.width, rect.height)
-      img.setAbsolutePosition(
-        img_field[1] + (rect.width - img.scaledWidth) / 2,
-        img_field[2] + (rect.height - img.scaledHeight) /2
-      )
-
-      cb = @stamp.getOverContent(img_field[0].to_i)
-      cb.addImage(img)
-    end
-
-    # Takes the PDF output and sends as a string.  Basically it's sole
-    # purpose is to be used with send_data in rails.
-    def to_s
-      fill
-      String.from_java_bytes(@baos.toByteArray)
-      #File.open(@tmp_path).read
-    end
-
+    
     # Saves the PDF into a file defined by path given.
     def save_as(file)
       f = File.new(file, "w")
       f.syswrite to_s
-      #fill
-      #mv(@tmp_path, file) # NOTE what if someone tries to duplicate the file by saving twice?
-      #@tmp_path = file # Just in case you decide to do "to_s" also.
     end
-
+    
     private
 
     def fill
@@ -102,3 +55,5 @@ module PDF
     end
   end
 end
+    
+    

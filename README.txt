@@ -1,32 +1,36 @@
-pdf/stamper
-    by Jason Yates
-    http://www.peabrane.com/
+= pdf/stamper - PDF Templates, Wow!
+  http://github.com/jaywhy/pdf-stamper/
+  by Jason Yates
 
 == DESCRIPTION:
-  
-PDF::Stamper
 
-== FEATURES/PROBLEMS:
-  
-* FIX (list of features or problems)
+Super cool PDF templates using iText's PdfStamper.
 
-== SYNOPSIS:
+== CAVEAT:
 
-  FIX (code sample of usage)
+Anything super cool must have a caveat. You have to use JRuby or RJB. Plus you
+can only use Adobe LiveCycle Designer to create the templates.
 
-== REQUIREMENTS:
-
-* FIX (list of requirements)
+== EXAMPLE:
+pdf = PDF::Stamper.new("my_template.pdf")
+pdf.text :first_name, "Jason"
+pdf.text :last_name, "Yates"
+pdf.image :photo, "photo.jpg"
+pdf.save_as "my_output.pdf"
 
 == INSTALL:
 
-* FIX (sudo gem install, anything else)
+$ sudo gem install pdf_stamper
+
+== CODE:
+
+$ git clone http://github.com/jaywhy/pdf-stamper/
 
 == LICENSE:
 
 (The MIT License)
 
-Copyright (c) 2007 Jason Yates
+Copyright (c) 2007-2009 Jason Yates
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

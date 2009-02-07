@@ -16,6 +16,6 @@ describe PDF::Stamper do
   it "should save PDF document" do
     @pdf.save_as "test_output.pdf"
     File.exist?("test_output.pdf").should be_true
-    #File.delete("test_output.pdf") # Comment this out to view the output
+    File.delete("test_output.pdf") # Comment this out to view the output
   end
 end
