@@ -20,7 +20,7 @@ pdf.save_as "my_output.pdf"
 
 == INSTALL:
 
-$ sudo gem install pdf_stamper
+$ sudo gem install pdf-stamper
 
 == CODE:
 
