@@ -5,7 +5,7 @@
 require 'rubygems'
 require 'rjb'
 
-Rjb::load(File.join(File.dirname(__FILE__), '..', '..', 'ext', 'iText-2.1.4.jar'), ['-Djava.awt.headless=true'])
+Rjb::load(File.join(File.dirname(__FILE__), '..', '..', '..', 'ext', 'iText-2.1.4.jar'), ['-Djava.awt.headless=true'])
 
 module PDF
   # PDF::Stamper::RJB
@@ -47,8 +47,8 @@ module PDF
       rect = rectangle.new(img_field[1], img_field[2], img_field[3], img_field[4])
       img.scaleToFit(rect.width, rect.height)
       img.setAbsolutePosition(
-        img_field[1] + (rect.width - img.scaledWidth) / 2,
-        img_field[2] + (rect.height - img.scaledHeight) /2
+        img_field[1] + (rect.width - img.getScaledWidth) / 2,
+        img_field[2] + (rect.height - img.getScaledHeight) /2
       )
 
       cb = @stamp.getOverContent(img_field[0].to_i)
