@@ -43,8 +43,7 @@ module PDF
     
     # Saves the PDF into a file defined by path given.
     def save_as(file)
-      f = File.new(file, "w")
-      f.syswrite to_s
+      File.open(file, "wb") { |f| f.write to_s }
     end
     
     private
