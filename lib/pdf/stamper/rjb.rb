@@ -30,6 +30,8 @@ module PDF
   
     def template(template)
       reader = @pdfreader.new(template)
+      @pagesize = reader.getPageSize(1)
+      @numpages = reader.getNumberOfPages()
       @baos = @bytearray.new
       @stamp = @pdfstamper.new(reader, @baos)
       @form = @stamp.getAcroFields()
@@ -61,5 +63,37 @@ module PDF
       fill
       @baos.toByteArray
     end
+    
+    def add_images(images)
+      image = Rjb::import('com.lowagie.text.Image')
+      image_size = []
+      image_size[0] = @pagesize.width() / 2
+      image_size[1] = @pagesize.height() / 2
+      pages = (images.length / 4.0).ceil
+      pages.times do |index|
+        page_number = index + @numpages + 1
+        image_index = index * 4
+        @stamp.insertPage(page_number, @pagesize)
+        over = @stamp.getOverContent(page_number)
+        4.times do |n|
+          if image_path = images[image_index + n]
+            img = image.getInstance(image_path)
+            img.scaleToFit(image_size[0], image_size[1])
+            case n
+            when 0
+              img.setAbsolutePosition(0, image_size[1])
+            when 1
+              img.setAbsolutePosition(image_size[0], image_size[1])
+            when 2
+              img.setAbsolutePosition(0, 0)
+            when 3
+              img.setAbsolutePosition(image_size[0], 0)
+            end
+            over.addImage(img)
+          end
+        end
+      end
+    end
+    
   end
 end
