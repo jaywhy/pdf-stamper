@@ -95,5 +95,14 @@ module PDF
       end
     end
     
+    def add_image_on_page(page, x, y, url)
+      over = @stamp.getOverContent(page)
+      image_class = Rjb::import('com.lowagie.text.Image')
+      img = image_class.getInstance(url)
+      img.setAbsolutePosition(x,y)
+      img.scaleToFit(200,70)
+      over.addImage(img)
+    end
+    
   end
 end
