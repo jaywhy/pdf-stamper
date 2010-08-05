@@ -24,6 +24,7 @@ module PDF
       @acrofields   = Rjb::import('com.lowagie.text.pdf.AcroFields')
       @pdfreader    = Rjb::import('com.lowagie.text.pdf.PdfReader')
       @pdfstamper   = Rjb::import('com.lowagie.text.pdf.PdfStamper')
+      @pdfwriter    = Rjb::import('com.lowagie.text.pdf.PdfWriter')
     
       template(pdf) if ! pdf.nil?
     end
@@ -65,31 +66,43 @@ module PDF
     end
     
     def add_images(images)
-      image = Rjb::import('com.lowagie.text.Image')
+      image_class = Rjb::import('com.lowagie.text.Image')
+      annotation_class = Rjb::import('com.lowagie.text.Annotation')
+      pdf_content_byte_class = Rjb::import('com.lowagie.text.pdf.PdfContentByte')
+      basefont_class = Rjb::import('com.lowagie.text.pdf.BaseFont')
+      basefont = basefont_class.createFont(basefont_class.HELVETICA, basefont_class.CP1252, basefont_class.NOT_EMBEDDED)
       image_size = []
       image_size[0] = @pagesize.width() / 2
-      image_size[1] = @pagesize.height() / 2
+      image_size[1] = (@pagesize.height() / 2) - 25
       pages = (images.length / 4.0).ceil
       pages.times do |index|
         page_number = index + @numpages + 1
         image_index = index * 4
         @stamp.insertPage(page_number, @pagesize)
         over = @stamp.getOverContent(page_number)
+        over.setFontAndSize(basefont, 12.0)
         4.times do |n|
-          if image_path = images[image_index + n]
-            img = image.getInstance(image_path)
-            img.scaleToFit(image_size[0], image_size[1])
-            case n
-            when 0
-              img.setAbsolutePosition(0, image_size[1])
-            when 1
-              img.setAbsolutePosition(image_size[0], image_size[1])
-            when 2
-              img.setAbsolutePosition(0, 0)
-            when 3
-              img.setAbsolutePosition(image_size[0], 0)
+          if image = images[image_index + n]
+            if image_path = image[0]
+              img = image_class.getInstance(image_path)
+              img.scaleToFit(image_size[0], (image_size[1] + 25))
+              case n
+              when 0
+                img.setAbsolutePosition(0, (image_size[1] + 25))
+              when 1
+                img.setAbsolutePosition(image_size[0], (image_size[1] + 25))
+              when 2
+                img.setAbsolutePosition(0, 25)
+              when 3
+                img.setAbsolutePosition(image_size[0], 25)
+              end
+              over.addImage(img)
             end
-            over.addImage(img)
+            if image_label = image[1]
+              over.beginText()
+              over.showTextAligned(pdf_content_byte_class.ALIGN_CENTER, image_label, (img.getAbsoluteX() + (image_size[0] / 2)), (img.getAbsoluteY() - 20), 0)
+              over.endText()
+            end
           end
         end
       end
@@ -103,6 +116,5 @@ module PDF
       img.scaleToFit(200,70)
       over.addImage(img)
     end
-    
   end
 end
