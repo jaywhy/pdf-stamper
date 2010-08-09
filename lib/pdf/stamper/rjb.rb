@@ -82,8 +82,8 @@ module PDF
         over = @stamp.getOverContent(page_number)
         over.setFontAndSize(basefont, 12.0)
         4.times do |n|
-          if image = images[image_index + n]
-            if image_path = image[0]
+          if pdf_image = images[image_index + n]
+            if image_path = pdf_image[0]
               img = image_class.getInstance(image_path)
               img.scaleToFit(image_size[0], (image_size[1] + 25))
               case n
@@ -98,7 +98,7 @@ module PDF
               end
               over.addImage(img)
             end
-            if image_label = image[1]
+            if image_label = pdf_image[1]
               over.beginText()
               over.showTextAligned(pdf_content_byte_class.ALIGN_CENTER, image_label, (img.getAbsoluteX() + (image_size[0] / 2)), (img.getAbsoluteY() - 20), 0)
               over.endText()
