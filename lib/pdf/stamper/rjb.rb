@@ -25,6 +25,10 @@ module PDF
       @pdfreader    = Rjb::import('com.lowagie.text.pdf.PdfReader')
       @pdfstamper   = Rjb::import('com.lowagie.text.pdf.PdfStamper')
       @pdfwriter    = Rjb::import('com.lowagie.text.pdf.PdfWriter')
+      @image_class  = Rjb::import('com.lowagie.text.Image')
+      @pdf_content_byte_class = Rjb::import('com.lowagie.text.pdf.PdfContentByte')
+      @basefont_class = Rjb::import('com.lowagie.text.pdf.BaseFont')
+      @rectangle = Rjb::import('com.lowagie.text.Rectangle')
     
       template(pdf) if ! pdf.nil?
     end
@@ -42,12 +46,11 @@ module PDF
     def image(key, image_path)
       # Idea from here http://itext.ugent.be/library/question.php?id=31 
       # Thanks Bruno for letting me know about it.
-      image = Rjb::import('com.lowagie.text.Image')
-      img = image.getInstance(image_path)
+      img = @image_class.getInstance(image_path)
       img_field = @form.getFieldPositions(key.to_s)
 
-      rectangle = Rjb::import('com.lowagie.text.Rectangle')
-      rect = rectangle.new(img_field[1], img_field[2], img_field[3], img_field[4])
+      
+      rect = @rectangle.new(img_field[1], img_field[2], img_field[3], img_field[4])
       img.scaleToFit(rect.width, rect.height)
       img.setAbsolutePosition(
         img_field[1] + (rect.width - img.getScaledWidth) / 2,
@@ -66,11 +69,7 @@ module PDF
     end
     
     def add_images(images)
-      image_class = Rjb::import('com.lowagie.text.Image')
-      annotation_class = Rjb::import('com.lowagie.text.Annotation')
-      pdf_content_byte_class = Rjb::import('com.lowagie.text.pdf.PdfContentByte')
-      basefont_class = Rjb::import('com.lowagie.text.pdf.BaseFont')
-      basefont = basefont_class.createFont(basefont_class.HELVETICA, basefont_class.CP1252, basefont_class.NOT_EMBEDDED)
+      basefont = @basefont_class.createFont(@basefont_class.HELVETICA, @basefont_class.CP1252, @basefont_class.NOT_EMBEDDED)
       image_size = []
       image_size[0] = @pagesize.width() / 2
       image_size[1] = (@pagesize.height() / 2) - 25
@@ -84,7 +83,7 @@ module PDF
         4.times do |n|
           if pdf_image = images[image_index + n]
             if image_path = pdf_image[0]
-              img = image_class.getInstance(image_path)
+              img = @image_class.getInstance(image_path)
               img.scaleToFit(image_size[0], (image_size[1] + 25))
               case n
               when 0
@@ -100,7 +99,7 @@ module PDF
             end
             if image_label = pdf_image[1]
               over.beginText()
-              over.showTextAligned(pdf_content_byte_class.ALIGN_CENTER, image_label, (img.getAbsoluteX() + (image_size[0] / 2)), (img.getAbsoluteY() - 20), 0)
+              over.showTextAligned(@pdf_content_byte_class.ALIGN_CENTER, image_label, (img.getAbsoluteX() + (image_size[0] / 2)), (img.getAbsoluteY() - 20), 0)
               over.endText()
             end
           end
@@ -110,8 +109,7 @@ module PDF
     
     def add_image_on_page(page, x, y, url)
       over = @stamp.getOverContent(page)
-      image_class = Rjb::import('com.lowagie.text.Image')
-      img = image_class.getInstance(url)
+      img = @image_class.getInstance(url)
       img.setAbsolutePosition(x,y)
       img.scaleToFit(200,70)
       over.addImage(img)
