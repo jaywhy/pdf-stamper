@@ -26,8 +26,8 @@ module PDF
       @pdfstamper   = Rjb::import('com.lowagie.text.pdf.PdfStamper')
       @pdfwriter    = Rjb::import('com.lowagie.text.pdf.PdfWriter')
       @image_class  = Rjb::import('com.lowagie.text.Image')
-      # @pdf_content_byte_class = Rjb::import('com.lowagie.text.pdf.PdfContentByte')
-      # @basefont_class = Rjb::import('com.lowagie.text.pdf.BaseFont')
+      @pdf_content_byte_class = Rjb::import('com.lowagie.text.pdf.PdfContentByte')
+      @basefont_class = Rjb::import('com.lowagie.text.pdf.BaseFont')
       @rectangle = Rjb::import('com.lowagie.text.Rectangle')
     
       template(pdf) if ! pdf.nil?
@@ -69,7 +69,7 @@ module PDF
     end
     
     def add_images(images)
-      # basefont = @basefont_class.createFont(@basefont_class.HELVETICA, @basefont_class.CP1252, @basefont_class.NOT_EMBEDDED)
+      basefont = @basefont_class.createFont(@basefont_class.HELVETICA, @basefont_class.CP1252, @basefont_class.NOT_EMBEDDED)
       image_size = []
       image_size[0] = @pagesize.width() / 2
       image_size[1] = (@pagesize.height() / 2) - 25
@@ -97,11 +97,11 @@ module PDF
               end
               over.addImage(img)
             end
-            # if image_label = pdf_image[1]
-            #   over.beginText()
-            #   over.showTextAligned(@pdf_content_byte_class.ALIGN_CENTER, image_label, (img.getAbsoluteX() + (image_size[0] / 2)), (img.getAbsoluteY() - 20), 0)
-            #   over.endText()
-            # end
+            if image_label = pdf_image[1]
+              over.beginText()
+              over.showTextAligned(@pdf_content_byte_class.ALIGN_CENTER, image_label, (img.getAbsoluteX() + (image_size[0] / 2)), (img.getAbsoluteY() - 20), 0)
+              over.endText()
+            end
           end
         end
       end
