@@ -1,14 +1,14 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{pdf-stamper}
+  s.name = %q{spatialnetworks-pdf-stamper}
   s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Jason Yates"]
-  s.date = %q{2009-02-08}
+  s.authors = ["Joe Steele"]
+  s.date = %q{2010-08-19}
   s.description = %q{Super cool PDF templates using iText's PdfStamper.  == CAVEAT:  Anything super cool must have a caveat. You have to use JRuby or RJB. Plus you can only use Adobe LiveCycle Designer to create the templates.  == EXAMPLE: pdf = PDF::Stamper.new("my_template.pdf") pdf.text :first_name, "Jason" pdf.text :last_name, "Yates" pdf.image :photo, "photo.jpg" pdf.save_as "my_output.pdf"}
-  s.email = %q{jaywhy@gmail.com}
+  s.email = %q{joe@spatialnetworks.com}
   s.extra_rdoc_files = ["History.txt", "Manifest.txt", "README.txt"]
   s.files = ["History.txt", "Manifest.txt", "README.txt", "Rakefile", "ext/iText-2.1.4.jar", "lib/pdf/stamper.rb", "lib/pdf/stamper/jruby.rb", "lib/pdf/stamper/rjb.rb", "spec/logo.gif", "spec/pdf_stamper_spec.rb", "spec/test_template.pdf"]
   s.has_rdoc = true
