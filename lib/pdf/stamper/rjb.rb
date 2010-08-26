@@ -71,8 +71,10 @@ module PDF
     def add_images(images)
       basefont = @basefont_class.createFont(@basefont_class.HELVETICA, @basefont_class.CP1252, @basefont_class.NOT_EMBEDDED)
       image_size = []
-      image_size[0] = @pagesize.width() / 2
-      image_size[1] = (@pagesize.height() / 2) - 25
+      half_page_width = @pagesize.width() / 2
+      half_page_height = @pagesize.height() / 2
+      image_size[0] = half_page_width - 80
+      image_size[1] = half_page_height - 80
       pages = (images.length / 4.0).ceil
       pages.times do |index|
         page_number = index + @numpages + 1
@@ -84,27 +86,30 @@ module PDF
           if pdf_image = images[image_index + n]
             if image_path = pdf_image[0]
               img = @image_class.getInstance(image_path)
-              img.scaleToFit(image_size[0], (image_size[1] + 25))
+              img.scaleToFit(image_size[0] + 30, (image_size[1]))
+              img_x_offset = (half_page_width - image_size[0]) / 2
+              img_y_offset = (half_page_height - img.getScaledHeight()) / 2
               case n
               when 0
-                img.setAbsolutePosition(0, (image_size[1] + 25))
+                img.setAbsolutePosition(img_x_offset, (half_page_height + img_y_offset))
               when 1
-                img.setAbsolutePosition(image_size[0], (image_size[1] + 25))
+                img.setAbsolutePosition((half_page_width + (img_x_offset - 30)), (half_page_height + img_y_offset))
               when 2
-                img.setAbsolutePosition(0, 25)
+                img.setAbsolutePosition(img_x_offset, img_y_offset)
               when 3
-                img.setAbsolutePosition(image_size[0], 25)
+                img.setAbsolutePosition((half_page_width + (img_x_offset - 30)), img_y_offset)
               end
               over.addImage(img)
             end
             if image_label = pdf_image[1]
               over.beginText()
-              over.showTextAligned(@pdf_content_byte_class.ALIGN_CENTER, image_label, (img.getAbsoluteX() + (image_size[0] / 2)), (img.getAbsoluteY() - 20), 0)
+              over.showTextAligned(@pdf_content_byte_class.ALIGN_CENTER, image_label, (img.getAbsoluteX() + ((image_size[0] + 30) / 2)), (img.getAbsoluteY() - 15), 0)
               over.endText()
             end
           end
         end
       end
+      @stamp.setFullCompression()
     end
     
     def add_image_on_page(page, x, y, url)
