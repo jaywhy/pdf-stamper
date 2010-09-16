@@ -1,18 +1,18 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{spatialnetworks-pdf-stamper}
-  s.version = "0.3.0"
+  s.name = %q{ps-pdf-stamper}
+  s.version = "0.3.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Joe Steele"]
-  s.date = %q{2010-08-19}
-  s.description = %q{Super cool PDF templates using iText's PdfStamper.  == CAVEAT:  Anything super cool must have a caveat. You have to use JRuby or RJB. Plus you can only use Adobe LiveCycle Designer to create the templates.  == EXAMPLE: pdf = PDF::Stamper.new("my_template.pdf") pdf.text :first_name, "Jason" pdf.text :last_name, "Yates" pdf.image :photo, "photo.jpg" pdf.save_as "my_output.pdf"}
-  s.email = %q{joe@spatialnetworks.com}
+  s.date = %q{2010-09-15}
+  s.description = %q{Fill out PDF forms (templates) using iText's PdfStamper.  == CAVEAT:  You have to use JRuby or RJB. You need Adobe LiveCycle Designeror Acrobat Professional to create the templates.  == EXAMPLE: pdf = PDF::Stamper.new("my_template.pdf") pdf.text :first_name, "Jason" pdf.text :last_name, "Yates" pdf.image :photo, "photo.jpg" pdf.checkbox :hungry pdf.save_as "my_output.pdf"}
+  s.email = %q{paulschreiber@gmail.com}
   s.extra_rdoc_files = ["History.txt", "Manifest.txt", "README.txt"]
-  s.files = ["History.txt", "Manifest.txt", "README.txt", "Rakefile", "ext/iText-2.1.4.jar", "lib/pdf/stamper.rb", "lib/pdf/stamper/jruby.rb", "lib/pdf/stamper/rjb.rb", "spec/logo.gif", "spec/pdf_stamper_spec.rb", "spec/test_template.pdf"]
+  s.files = ["History.txt", "Manifest.txt", "README.txt", "Rakefile", "ext/iText-5.0.4.jar", "lib/pdf/stamper.rb", "lib/pdf/stamper/jruby.rb", "lib/pdf/stamper/rjb.rb", "spec/logo.gif", "spec/pdf_stamper_spec.rb", "spec/test_template.pdf"]
   s.has_rdoc = true
-  s.homepage = %q{http://github.com/spatialnetworks/pdf-stamper/}
+  s.homepage = %q{http://github.com/paulschreiber/pdf-stamper/}
   s.rdoc_options = ["--main", "README.txt"]
   s.require_paths = ["lib", "ext"]
   s.rubyforge_project = %q{pdf-stamper}

@@ -5,7 +5,7 @@
 require 'rubygems'
 require 'rjb'
 
-Rjb::load(File.join(File.dirname(__FILE__), '..', '..', '..', 'ext', 'iText-2.1.4.jar'), ['-Djava.awt.headless=true'])
+Rjb::load(File.join(File.dirname(__FILE__), '..', '..', '..', 'ext', 'iText-5.0.4.jar'), ['-Djava.awt.headless=true'])
 
 module PDF
   # PDF::Stamper::RJB
@@ -21,14 +21,14 @@ module PDF
     def initialize(pdf = nil, options = {})
       @bytearray    = Rjb::import('java.io.ByteArrayOutputStream')
       @filestream   = Rjb::import('java.io.FileOutputStream')
-      @acrofields   = Rjb::import('com.lowagie.text.pdf.AcroFields')
-      @pdfreader    = Rjb::import('com.lowagie.text.pdf.PdfReader')
-      @pdfstamper   = Rjb::import('com.lowagie.text.pdf.PdfStamper')
-      @pdfwriter    = Rjb::import('com.lowagie.text.pdf.PdfWriter')
-      @image_class  = Rjb::import('com.lowagie.text.Image')
-      @pdf_content_byte_class = Rjb::import('com.lowagie.text.pdf.PdfContentByte')
-      @basefont_class = Rjb::import('com.lowagie.text.pdf.BaseFont')
-      @rectangle = Rjb::import('com.lowagie.text.Rectangle')
+      @acrofields   = Rjb::import('com.itextpdf.text.pdf.AcroFields')
+      @pdfreader    = Rjb::import('com.itextpdf.text.pdf.PdfReader')
+      @pdfstamper   = Rjb::import('com.itextpdf.text.pdf.PdfStamper')
+      @pdfwriter    = Rjb::import('com.itextpdf.text.pdf.PdfWriter')
+      @image_class  = Rjb::import('com.itextpdf.text.Image')
+      @pdf_content_byte_class = Rjb::import('com.itextpdf.text.pdf.PdfContentByte')
+      @basefont_class = Rjb::import('com.itextpdf.text.pdf.BaseFont')
+      @rectangle = Rjb::import('com.itextpdf.text.Rectangle')
     
       template(pdf) if ! pdf.nil?
     end

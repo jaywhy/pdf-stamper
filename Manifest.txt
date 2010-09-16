@@ -2,7 +2,7 @@ History.txt
 Manifest.txt
 README.txt
 Rakefile
-ext/iText-2.1.4.jar
+ext/iText-5.0.4.jar
 lib/pdf/stamper.rb
 lib/pdf/stamper/jruby.rb
 lib/pdf/stamper/rjb.rb
