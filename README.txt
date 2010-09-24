@@ -4,9 +4,6 @@
 
   15 September 2010 -- fork by Paul Schreiber
   http://github.com/paulschreiber/pdf-stamper/
-  - checkbox support added
-  - iText updated to 5.0.4
-  - documentation updated and typos fixed
 
 == DESCRIPTION:
 
@@ -23,6 +20,9 @@ pdf.text :first_name, "Jason"
 pdf.text :last_name, "Yates"
 pdf.image :photo, "photo.jpg"
 pdf.checkbox :hungry
+pdf.ellipse(140, 380, 50, 13)
+pdf.rectangle(140, 380, 50, 13)
+pdf.circle(140, 380)
 pdf.save_as "my_output.pdf"
 
 == INSTALL:

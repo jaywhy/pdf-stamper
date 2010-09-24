@@ -29,6 +29,7 @@ module PDF
       @pdf_content_byte_class = Rjb::import('com.itextpdf.text.pdf.PdfContentByte')
       @basefont_class = Rjb::import('com.itextpdf.text.pdf.BaseFont')
       @rectangle = Rjb::import('com.itextpdf.text.Rectangle')
+      @gray_color = Rjb::import('com.itextpdf.text.pdf.GrayColor')
     
       template(pdf) if ! pdf.nil?
     end
@@ -40,6 +41,8 @@ module PDF
       @baos = @bytearray.new
       @stamp = @pdfstamper.new(reader, @baos)
       @form = @stamp.getAcroFields()
+      @black = @gray_color.new(0.0)
+      @canvas = @stamp.getOverContent(1)
     end
 
     # Set a button field defined by key and replaces with an image.
@@ -61,7 +64,7 @@ module PDF
       cb.addImage(img)
     end
     
-    # Takes the PDF output and sends as a string.  Basically it's sole
+    # Takes the PDF output and sends as a string.  Basically its sole
     # purpose is to be used with send_data in rails.
     def to_s
       fill

@@ -10,7 +10,7 @@ include FileUtils
 
 module PDF
   class Stamper
-    VERSION = "0.3.1"
+    VERSION = "0.3.2"
     
     if RUBY_PLATFORM =~ /java/ # ifdef to check if your using JRuby
       require 'pdf/stamper/jruby'
@@ -60,6 +60,18 @@ module PDF
 
       @form.getAppearanceStates(key.to_s)
     end
+
+    def circle(x, y, r)
+      @canvas.circle(x, y, r)
+    end
+
+    def ellipse(x, y, width, height)
+      @canvas.ellipse(x, y, x + width, y + height)
+    end
+
+    def rectangle(x, y,  width, height)
+      @canvas.rectangle(x, y, width, height)
+    end
     
     # Saves the PDF into a file defined by path given.
     def save_as(file)
@@ -69,6 +81,7 @@ module PDF
     private
 
     def fill
+      @canvas.stroke()
       @stamp.setFormFlattening(true)
       @stamp.close
     end
