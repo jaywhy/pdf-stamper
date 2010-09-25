@@ -4,7 +4,7 @@
 
 $:.unshift(File.join(File.dirname(__FILE__), '..', '..', '..', 'ext'))
 require 'java'
-require 'iText-5.0.4.jar'
+require 'iText-4.2.0.jar'
 
 include_class 'java.io.FileOutputStream'
 include_class 'java.io.ByteArrayOutputStream'

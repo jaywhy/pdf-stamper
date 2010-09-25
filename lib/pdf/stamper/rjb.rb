@@ -5,7 +5,7 @@
 require 'rubygems'
 require 'rjb'
 
-Rjb::load(File.join(File.dirname(__FILE__), '..', '..', '..', 'ext', 'iText-5.0.4.jar'), ['-Djava.awt.headless=true'])
+Rjb::load(File.join(File.dirname(__FILE__), '..', '..', '..', 'ext', 'iText-4.2.0.jar'), ['-Djava.awt.headless=true'])
 
 module PDF
   # PDF::Stamper::RJB
