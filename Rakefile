@@ -5,10 +5,10 @@ require 'spec/rake/spectask'
 %w[rubygems rake rake/clean fileutils newgem rubigen].each { |f| require f }
 
 $hoe = Hoe.new('pdf-stamper', PDF::Stamper::VERSION) do |p|
-  p.name = 'pdf-stamper'
+  p.name = 'ps-pdf-stamper'
   p.author = 'Paul Schreiber'
   p.email = 'paulschreiber@gmail.com'
-  p.summary = "Super cool PDF templates using iText's PdfStamper."
+  p.summary = "PDF templates using iText's PdfStamper."
   p.description = p.paragraphs_of('README.txt', 2..5).join("\n\n")
   p.changes = p.paragraphs_of("History.txt", 0..1).join("\n\n")
   p.extra_dev_deps = [

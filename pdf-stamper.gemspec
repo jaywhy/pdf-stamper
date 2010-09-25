@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib", "ext"]
   s.rubyforge_project = %q{pdf-stamper}
   s.rubygems_version = %q{1.3.1}
-  s.summary = %q{Super cool PDF templates using iText's PdfStamper.}
+  s.summary = %q{PDF templates using iText's PdfStamper.}
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
