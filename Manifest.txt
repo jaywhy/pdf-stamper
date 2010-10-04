@@ -1,6 +1,6 @@
 History.txt
 Manifest.txt
-README.txt
+README.rdoc
 Rakefile
 ext/iText-2.1.4.jar
 lib/pdf/stamper.rb
