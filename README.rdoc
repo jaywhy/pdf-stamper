@@ -2,9 +2,6 @@
   http://github.com/jaywhy/pdf-stamper/
   by Jason Yates
 
-  15 September 2010 -- fork by Paul Schreiber
-  http://github.com/paulschreiber/pdf-stamper/
-
 == DESCRIPTION:
 
 Fill out PDF forms (templates) using iText's PdfStamper.
@@ -27,17 +24,19 @@ pdf.save_as "my_output.pdf"
 
 == INSTALL:
 
-$ sudo gem install ps-pdf-stamper
+$ sudo gem install pdf-stamper
 
 == CODE:
 
-$ git clone http://github.com/paulschreiber/pdf-stamper/
+$ git clone http://github.com/jaywhy/pdf-stamper/
+
+== CONTRIBUTORS:
 
 == LICENSE:
 
 (The MIT License)
 
-Copyright (c) 2007-2009 Jason Yates
+Copyright (c) 2007-2010 Jason Yates
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
