@@ -1,3 +1,14 @@
+== 0.3.3 2010-09-24
+* iText downgraded to 4.2.0 due to license incompatibility
+
+== 0.3.2 2010-09-24
+* Added support for drawing circles, rectangles and ellipses
+
+== 0.3.1 2010-09-15
+* checkbox support added
+* iText updated to 5.0.4
+* documentation updated and typos fixed
+
 == 0.3.0 2009-02-08
 
 * Refactored the code.

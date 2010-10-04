@@ -4,7 +4,7 @@
 
 $:.unshift(File.join(File.dirname(__FILE__), '..', '..', '..', 'ext'))
 require 'java'
-require 'iText-2.1.4.jar'
+require 'iText-4.2.0.jar'
 
 include_class 'java.io.FileOutputStream'
 include_class 'java.io.ByteArrayOutputStream'
@@ -13,6 +13,7 @@ include_class 'com.lowagie.text.pdf.PdfReader'
 include_class 'com.lowagie.text.pdf.PdfStamper'
 include_class 'com.lowagie.text.Image'
 include_class 'com.lowagie.text.Rectangle'
+include_class 'com.lowagie.text.pdf.GrayColor'
 
 module PDF
   class Stamper
@@ -28,6 +29,8 @@ module PDF
       @baos = ByteArrayOutputStream.new
       @stamp = PdfStamper.new(reader, @baos)#FileOutputStream.new(@tmp_path))
       @form = @stamp.getAcroFields()
+      @black = GrayColor.new(0.0)
+      @canvas = @stamp.getOverContent(1)
     end
   
     # Set a button field defined by key and replaces with an image.

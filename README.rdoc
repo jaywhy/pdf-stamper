@@ -1,30 +1,37 @@
-= pdf/stamper - PDF Templates, Wow!
+= pdf/stamper - PDF Templates
   http://github.com/jaywhy/pdf-stamper/
   by Jason Yates
 
+  15 September 2010 -- fork by Paul Schreiber
+  http://github.com/paulschreiber/pdf-stamper/
+
 == DESCRIPTION:
 
-Super cool PDF templates using iText's PdfStamper.
+Fill out PDF forms (templates) using iText's PdfStamper.
 
 == CAVEAT:
 
-Anything super cool must have a caveat. You have to use JRuby or RJB. Plus you
-can only use Adobe LiveCycle Designer to create the templates.
+You have to use JRuby or RJB. You need Adobe LiveCycle Designer
+or Acrobat Professional to create the templates.
 
 == EXAMPLE:
 pdf = PDF::Stamper.new("my_template.pdf")
 pdf.text :first_name, "Jason"
 pdf.text :last_name, "Yates"
 pdf.image :photo, "photo.jpg"
+pdf.checkbox :hungry
+pdf.ellipse(140, 380, 50, 13)
+pdf.rectangle(140, 380, 50, 13)
+pdf.circle(140, 380)
 pdf.save_as "my_output.pdf"
 
 == INSTALL:
 
-$ sudo gem install pdf-stamper
+$ sudo gem install ps-pdf-stamper
 
 == CODE:
 
-$ git clone http://github.com/jaywhy/pdf-stamper/
+$ git clone http://github.com/paulschreiber/pdf-stamper/
 
 == LICENSE:
 
