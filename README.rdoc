@@ -32,6 +32,10 @@ $ git clone http://github.com/jaywhy/pdf-stamper/
 
 == CONTRIBUTORS:
 
+Paul Schreiber
+Joe Steele
+Ronny Hanssen
+
 == LICENSE:
 
 (The MIT License)
