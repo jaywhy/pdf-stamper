@@ -1,3 +1,7 @@
+== 0.3.4 2010-09-24
+* Circle/ellipse/rectangle now take a page parameter, and can be applied to a specific page.
+  This is useful for multi-page PDFs.
+
 == 0.3.3 2010-09-24
 * iText downgraded to 4.2.0 due to license incompatibility
 

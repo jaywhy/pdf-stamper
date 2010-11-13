@@ -42,7 +42,7 @@ module PDF
       @stamp = @pdfstamper.new(reader, @baos)
       @form = @stamp.getAcroFields()
       @black = @gray_color.new(0.0)
-      @canvas = @stamp.getOverContent(1)
+      @canvas_list = { 1 => @stamp.getOverContent(1) }
     end
 
     # Set a button field defined by key and replaces with an image.

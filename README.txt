@@ -21,7 +21,7 @@ pdf.text :last_name, "Yates"
 pdf.image :photo, "photo.jpg"
 pdf.checkbox :hungry
 pdf.ellipse(140, 380, 50, 13)
-pdf.rectangle(140, 380, 50, 13)
+pdf.rectangle(140, 380, 50, 13, 2)
 pdf.circle(140, 380)
 pdf.save_as "my_output.pdf"
 
@@ -37,7 +37,7 @@ $ git clone http://github.com/paulschreiber/pdf-stamper/
 
 (The MIT License)
 
-Copyright (c) 2007-2009 Jason Yates
+Copyright 2007-2010 Jason Yates, Paul Schreiber
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
