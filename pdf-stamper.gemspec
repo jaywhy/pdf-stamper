@@ -11,7 +11,6 @@ Gem::Specification.new do |s|
   s.email = %q{paulschreiber@gmail.com}
   s.extra_rdoc_files = ["History.txt", "Manifest.txt", "README.txt"]
   s.files = ["History.txt", "Manifest.txt", "README.txt", "Rakefile", "ext/iText-4.2.0.jar", "lib/pdf/stamper.rb", "lib/pdf/stamper/jruby.rb", "lib/pdf/stamper/rjb.rb", "spec/logo.gif", "spec/pdf_stamper_spec.rb", "spec/test_template.pdf"]
-  s.has_rdoc = true
   s.homepage = %q{http://github.com/paulschreiber/pdf-stamper/}
   s.rdoc_options = ["--main", "README.txt"]
   s.require_paths = ["lib", "ext"]
