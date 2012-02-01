@@ -9,11 +9,11 @@ Gem::Specification.new do |s|
   s.date = %q{2010-09-24}
   s.description = %q{Fill out PDF forms (templates) using iText's PdfStamper.  == CAVEAT:  You have to use JRuby or RJB. You need Adobe LiveCycle Designeror Acrobat Professional to create the templates.  == EXAMPLE: pdf = PDF::Stamper.new("my_template.pdf") pdf.text :first_name, "Jason" pdf.text :last_name, "Yates" pdf.image :photo, "photo.jpg" pdf.checkbox :hungry pdf.save_as "my_output.pdf"}
   s.email = %q{paulschreiber@gmail.com}
-  s.extra_rdoc_files = ["History.txt", "Manifest.txt", "README.txt"]
-  s.files = ["History.txt", "Manifest.txt", "README.txt", "Rakefile", "ext/iText-4.2.0.jar", "lib/pdf/stamper.rb", "lib/pdf/stamper/jruby.rb", "lib/pdf/stamper/rjb.rb", "spec/logo.gif", "spec/pdf_stamper_spec.rb", "spec/test_template.pdf"]
+  s.extra_rdoc_files = ["History.txt", "Manifest.txt", "README.rdoc"]
+  s.files = ["History.txt", "Manifest.txt", "README.rdoc", "Rakefile", "ext/iText-4.2.0.jar", "lib/pdf/stamper.rb", "lib/pdf/stamper/jruby.rb", "lib/pdf/stamper/rjb.rb", "spec/logo.gif", "spec/pdf_stamper_spec.rb", "spec/test_template.pdf"]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/paulschreiber/pdf-stamper/}
-  s.rdoc_options = ["--main", "README.txt"]
+  s.rdoc_options = ["--main", "README.rdoc"]
   s.require_paths = ["lib", "ext"]
   s.rubyforge_project = %q{pdf-stamper}
   s.rubygems_version = %q{1.3.1}
