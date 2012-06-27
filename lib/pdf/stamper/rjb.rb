@@ -33,6 +33,10 @@ module PDF
     
       template(pdf) if ! pdf.nil?
     end
+    
+    def is_checkbox(field_type)
+      field_type == @acrofields.FIELD_TYPE_CHECKBOX
+    end
   
     def template(template)
       reader = @pdfreader.new(template)

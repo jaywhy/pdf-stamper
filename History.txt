@@ -1,3 +1,6 @@
+== 0.3.5 2012-06-27
+* Checkboxes now work in JRuby
+
 == 0.3.4 2010-09-24
 * Circle/ellipse/rectangle now take a page parameter, and can be applied to a specific page.
   This is useful for multi-page PDFs.
