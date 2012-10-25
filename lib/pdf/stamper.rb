@@ -10,7 +10,7 @@ include FileUtils
 
 module PDF
   class Stamper
-    VERSION = "0.3.5"
+    VERSION = "0.3.6"
     
     if RUBY_PLATFORM =~ /java/ # ifdef to check if your using JRuby
       require 'pdf/stamper/jruby'

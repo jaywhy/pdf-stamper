@@ -6,14 +6,14 @@ $:.unshift(File.join(File.dirname(__FILE__), '..', '..', '..', 'ext'))
 require 'java'
 require 'iText-4.2.0.jar'
 
-include_class 'java.io.FileOutputStream'
-include_class 'java.io.ByteArrayOutputStream'
-include_class 'com.lowagie.text.pdf.AcroFields'
-include_class 'com.lowagie.text.pdf.PdfReader'
-include_class 'com.lowagie.text.pdf.PdfStamper'
-include_class 'com.lowagie.text.Image'
-include_class 'com.lowagie.text.Rectangle'
-include_class 'com.lowagie.text.pdf.GrayColor'
+java_import 'java.io.FileOutputStream'
+java_import 'java.io.ByteArrayOutputStream'
+java_import 'com.lowagie.text.pdf.AcroFields'
+java_import 'com.lowagie.text.pdf.PdfReader'
+java_import 'com.lowagie.text.pdf.PdfStamper'
+java_import 'com.lowagie.text.Image'
+java_import 'com.lowagie.text.Rectangle'
+java_import 'com.lowagie.text.pdf.GrayColor'
 
 module PDF
   class Stamper

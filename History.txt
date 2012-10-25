@@ -1,3 +1,6 @@
+== 0.3.6 2012-10-25
+* use java_import instead of include_class (include_class deprecated in jruby 1.7.0)
+
 == 0.3.5 2012-06-27
 * Checkboxes now work in JRuby
 
