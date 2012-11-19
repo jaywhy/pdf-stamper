@@ -4,7 +4,7 @@
 
 $:.unshift(File.join(File.dirname(__FILE__), '..', '..', '..', 'ext'))
 require 'java'
-require 'iText-2.1.4.jar'
+require 'iText-4.2.0.jar'
 
 include_class 'java.io.FileOutputStream'
 include_class 'java.io.ByteArrayOutputStream'
@@ -21,12 +21,9 @@ module PDF
     end
   
     def template(template)
-      # NOTE I'd rather use a ByteArrayOutputStream.  However I
-      # couldn't get it working.  Patches welcome.
-      #@tmp_path = File.join(Dir::tmpdir, 'pdf-stamper-' + rand(10000).to_s + '.pdf')
       reader = PdfReader.new(template)
       @baos = ByteArrayOutputStream.new
-      @stamp = PdfStamper.new(reader, @baos)#FileOutputStream.new(@tmp_path))
+      @stamp = PdfStamper.new(reader, @baos)
       @form = @stamp.getAcroFields()
     end
   
