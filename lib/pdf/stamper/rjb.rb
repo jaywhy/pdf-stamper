@@ -122,5 +122,9 @@ module PDF
       img.scaleToFit(200,70)
       over.addImage(img)
     end
+
+    def create_barcode(format)
+      Rjb::import("com.lowagie.text.pdf.Barcode#{format}").new
+    end
   end
 end

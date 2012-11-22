@@ -1,3 +1,8 @@
+== WHY FORKED?
+
+forked from jaywhy/pdf-stamper to add barcode generation facilities
+
+
 = pdf/stamper - PDF Templates
   http://github.com/jaywhy/pdf-stamper/
   by Jason Yates
@@ -22,6 +27,9 @@ or Acrobat Professional to create the templates.
   pdf.ellipse(140, 380, 50, 13)
   pdf.rectangle(140, 380, 50, 13)
   pdf.circle(140, 380)
+
+  # *** NEW *** !!!! barcodes...
+  pdf.barcode("PDF417", "2d_barcode", "Barcode data...", aspect_ratio: 0.5)
 
   pdf.save_as "my_output.pdf"
 

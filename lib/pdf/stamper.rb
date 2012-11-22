@@ -5,6 +5,7 @@
 require 'rbconfig'
 require 'fileutils'
 require 'tmpdir'
+require 'active_support/inflector/methods'
 
 include FileUtils
 
@@ -71,6 +72,29 @@ module PDF
 
     def rectangle(x, y,  width, height)
       @canvas.rectangle(x, y, width, height)
+    end
+
+    # Example
+    # barcode("PDF417", "2d_barcode", "Barcode data...", aspect_ratio: 0.5)
+    def barcode(format, key, value, opts = {})
+      bar = create_barcode(format)
+      bar.setText(value)
+      opts.each do |name, opt|
+        bar.send("set#{name.to_s.camelize}", opt)
+      end
+
+      coords = @form.getFieldPositions(key.to_s)
+      rect = Rectangle.new(coords[1], coords[2], coords[3], coords[4])
+
+      barcode_img = bar.getImage
+      barcode_img.scalePercent(100, 100 * bar.getYHeight())
+      barcode_img.setAbsolutePosition(
+          coords[1] + (rect.width - barcode_img.scaledWidth) / 2,
+          coords[2] + (rect.height - barcode_img.scaledHeight) / 2
+      )
+
+      cb = @stamp.getOverContent(coords[0].to_i)
+      cb.addImage(barcode_img)
     end
     
     # Saves the PDF into a file defined by path given.
