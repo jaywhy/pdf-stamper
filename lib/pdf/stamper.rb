@@ -83,9 +83,6 @@ module PDF
         bar.send("set#{name.to_s.camelize}", opt)
       end
 
-      # bar.setAspectRatio(0.5.to_f)
-      # bar.setYHeight(2.8)
-
       coords = @form.getFieldPositions(key.to_s)
       rect = create_rectangle(coords)
 
