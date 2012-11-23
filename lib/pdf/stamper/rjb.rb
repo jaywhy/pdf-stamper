@@ -30,6 +30,8 @@ module PDF
       @basefont_class = Rjb::import('com.lowagie.text.pdf.BaseFont')
       @rectangle = Rjb::import('com.lowagie.text.Rectangle')
       @gray_color = Rjb::import('com.lowagie.text.pdf.GrayColor')
+      @base_font = Rjb::import('com.lowagie.text.pdf.BaseFont')
+      @default_font_encoding = @base_font.CP1252
     
       template(pdf) if ! pdf.nil?
     end
@@ -125,6 +127,14 @@ module PDF
 
     def create_barcode(format)
       Rjb::import("com.lowagie.text.pdf.Barcode#{format}").new
+    end
+
+    def create_rectangle(coords)
+      @rectangle.new(coords[1], coords[2], coords[3], coords[4])
+    end
+
+    def create_font(font_name)
+      @base_font.createFont(font_name, @default_font_encoding, false)
     end
   end
 end

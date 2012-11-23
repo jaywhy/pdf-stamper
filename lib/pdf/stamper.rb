@@ -37,7 +37,7 @@ module PDF
     # pdf.checkbox :hungry
     # pdf.save_as "my_output"
     
-    # Set a textfield defined by key and text to value.
+    # Set a textfield defined by key and text to value
     def text(key, value)
       @form.setField(key.to_s, value.to_s) # Value must be a string or itext will error.
     end
@@ -83,18 +83,30 @@ module PDF
         bar.send("set#{name.to_s.camelize}", opt)
       end
 
+      # bar.setAspectRatio(0.5.to_f)
+      # bar.setYHeight(2.8)
+
       coords = @form.getFieldPositions(key.to_s)
-      rect = Rectangle.new(coords[1], coords[2], coords[3], coords[4])
+      rect = create_rectangle(coords)
 
       barcode_img = bar.getImage
-      barcode_img.scalePercent(100, 100 * bar.getYHeight())
+      barcode_img.scalePercent(100, 100 * bar.getYHeight)
       barcode_img.setAbsolutePosition(
-          coords[1] + (rect.width - barcode_img.scaledWidth) / 2,
-          coords[2] + (rect.height - barcode_img.scaledHeight) / 2
+          coords[1] + (rect.getWidth - barcode_img.getScaledWidth) / 2,
+          coords[2] + (rect.getHeight - barcode_img.getScaledHeight) / 2
       )
 
       cb = @stamp.getOverContent(coords[0].to_i)
       cb.addImage(barcode_img)
+    end
+
+    # this has to be called *before* setting field values
+    def set_font(font_name)
+      itr = @form.getFields.keySet.iterator
+      while itr.hasNext
+        field = itr.next
+        @form.setFieldProperty(field, 'textfont', create_font('Courier'), nil)
+      end
     end
     
     # Saves the PDF into a file defined by path given.

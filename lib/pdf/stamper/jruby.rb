@@ -53,6 +53,14 @@ module PDF
     def create_barcode(format)
       PDF.const_get("Barcode#{format}").new
     end
+
+    def create_rectangle(coords)
+      Rectangle.new(coords[1], coords[2], coords[3], coords[4])
+    end
+
+    def create_font(font_name)
+      BaseFont.createFont(font_name, BaseFont.CP1252, false)
+    end
     
     # Takes the PDF output and sends as a string.  Basically it's sole
     # purpose is to be used with send_data in rails.
