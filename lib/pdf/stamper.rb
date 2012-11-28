@@ -102,7 +102,7 @@ module PDF
       itr = @form.getFields.keySet.iterator
       while itr.hasNext
         field = itr.next
-        @form.setFieldProperty(field, 'textfont', create_font('Courier'), nil)
+        @form.setFieldProperty(field, 'textfont', create_font(font_name), nil)
       end
     end
     
