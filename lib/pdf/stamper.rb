@@ -11,7 +11,7 @@ include FileUtils
 
 module PDF
   class Stamper
-    VERSION = "0.3.3"
+    VERSION = "0.3.4"
     
     if RUBY_PLATFORM =~ /java/ # ifdef to check if your using JRuby
       require 'pdf/stamper/jruby'
@@ -37,6 +37,27 @@ module PDF
     # pdf.checkbox :hungry
     # pdf.save_as "my_output"
     
+    
+    # PDF::Stamper allows setting metadata on the created PDF by passing
+    # the parameters to the set_more_info function. Our implementation here
+    # is slightly different from iText, in that we only receive a single key/value
+    # pair at a time, instead of a Map<string,string> since that is slightly
+    # more complex to bridge properly from ruby to java.
+    # 
+    # Possible keys include "Creator". All values here are strings.
+    # 
+    def set_metadata(key, value)
+      params = java.util.HashMap.new()
+      params.put(key.to_s, value)
+      @stamp.setMoreInfo(params)
+    end
+    
+    # If you want to have iText reset some of the metadata, this function will
+    # cause iText to use its default xml metadata.
+    def reset_xmp_metadata()
+      @stamp.setXmpMetadata("".to_java_bytes)
+    end
+    
     # Set a textfield defined by key and text to value
     def text(key, value)
       @form.setField(key.to_s, value.to_s) # Value must be a string or itext will error.
@@ -45,7 +66,7 @@ module PDF
     # Set a checkbox to checked
     def checkbox(key)
       field_type = @form.getFieldType(key.to_s)
-      return unless field_type == @acrofields.FIELD_TYPE_CHECKBOX
+      return unless field_type == PDF::AcroFields::FIELD_TYPE_CHECKBOX
 
       all_states = @form.getAppearanceStates(key.to_s)
       yes_state = all_states.reject{|x| x == "Off"}
@@ -57,7 +78,7 @@ module PDF
     # Get checkbox values
     def get_checkbox_values(key)
       field_type = @form.getFieldType(key.to_s)
-      return unless field_type == @acrofields.FIELD_TYPE_CHECKBOX
+      return unless field_type == PDF::AcroFields::FIELD_TYPE_CHECKBOX
 
       @form.getAppearanceStates(key.to_s)
     end
@@ -75,12 +96,13 @@ module PDF
     end
 
     # Example
-    # barcode("PDF417", "2d_barcode", "Barcode data...", aspect_ratio: 0.5)
+    # barcode("PDF417", "2d_barcode", "Barcode data...", AspectRatio: 0.5)
     def barcode(format, key, value, opts = {})
       bar = create_barcode(format)
       bar.setText(value)
       opts.each do |name, opt|
-        bar.send("set#{name.to_s.camelize}", opt)
+        #bar.send("set#{name.to_s.camelize}", opt) #Camelize is not present outside of Rails by default
+        bar.send("set#{name.to_s}", opt)
       end
 
       coords = @form.getFieldPositions(key.to_s)
@@ -106,7 +128,8 @@ module PDF
       end
     end
     
-    # Saves the PDF into a file defined by path given.
+    # Saves the PDF into a file defined by path given. If you want to save
+    # to a string/buffer, just use .to_s directly.
     def save_as(file)
       File.open(file, "wb") { |f| f.write to_s }
     end
@@ -120,5 +143,3 @@ module PDF
     end
   end
 end
-    
-    

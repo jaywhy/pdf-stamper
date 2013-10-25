@@ -24,9 +24,9 @@ module PDF
       # NOTE I'd rather use a ByteArrayOutputStream.  However I
       # couldn't get it working.  Patches welcome.
       #@tmp_path = File.join(Dir::tmpdir, 'pdf-stamper-' + rand(10000).to_s + '.pdf')
-      reader = PDF::PdfReader.new(template)
+      @reader = PDF::PdfReader.new(template)
       @baos = ByteArrayOutputStream.new
-      @stamp = PDF::PdfStamper.new(reader, @baos)#FileOutputStream.new(@tmp_path))
+      @stamp = PDF::PdfStamper.new(@reader, @baos)#FileOutputStream.new(@tmp_path))
       @form = @stamp.getAcroFields()
       @black = GrayColor.new(0.0)
       @canvas = @stamp.getOverContent(1)
