@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{pdf-stamper}
-  s.version = "0.3.3"
+  s.version = "0.3.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Paul Schreiber"]
@@ -11,8 +11,7 @@ Gem::Specification.new do |s|
   s.email = %q{paulschreiber@gmail.com}
   s.extra_rdoc_files = ["History.txt", "Manifest.txt", "README.rdoc"]
   s.files = ["History.txt", "Manifest.txt", "README.rdoc", "Rakefile", "ext/iText-4.2.0.jar", "lib/pdf/stamper.rb", "lib/pdf/stamper/jruby.rb", "lib/pdf/stamper/rjb.rb", "spec/logo.gif", "spec/pdf_stamper_spec.rb", "spec/test_template.pdf"]
-  s.has_rdoc = true
-  s.homepage = %q{http://github.com/paulschreiber/pdf-stamper/}
+  s.homepage = %q{http://github.com/technicool/pdf-stamper/}
   s.rdoc_options = ["--main", "README.rdoc"]
   s.require_paths = ["lib", "ext"]
   s.rubyforge_project = %q{pdf-stamper}

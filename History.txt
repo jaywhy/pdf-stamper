@@ -1,3 +1,12 @@
+== 0.3.7 2013-10-25
+* Adding PDF 417 Barcodes
+* Cleaning up some other changes since last official release of 0.3.3.
+
+
+== 0.3.5 2012-06-27
+* Checkboxes now work in JRuby (from https://github.com/paulschreiber/pdf-stamper/commit/e5098c670aa4b2b387c66411fa7b3f63c6511224)
+
+
 == 0.3.3 2010-09-24
 * iText downgraded to 4.2.0 due to license incompatibility
 

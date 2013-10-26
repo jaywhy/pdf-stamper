@@ -66,7 +66,7 @@ module PDF
     # Set a checkbox to checked
     def checkbox(key)
       field_type = @form.getFieldType(key.to_s)
-      return unless field_type == PDF::AcroFields::FIELD_TYPE_CHECKBOX
+      return unless is_checkbox(field_type)
 
       all_states = @form.getAppearanceStates(key.to_s)
       yes_state = all_states.reject{|x| x == "Off"}
@@ -78,7 +78,7 @@ module PDF
     # Get checkbox values
     def get_checkbox_values(key)
       field_type = @form.getFieldType(key.to_s)
-      return unless field_type == PDF::AcroFields::FIELD_TYPE_CHECKBOX
+      return unless is_checkbox(field_type)
 
       @form.getAppearanceStates(key.to_s)
     end

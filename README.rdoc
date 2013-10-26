@@ -1,15 +1,13 @@
-== WHY FORKED?
-
-forked from jaywhy/pdf-stamper to add barcode generation facilities
-
-
-= pdf/stamper - PDF Templates
-  http://github.com/jaywhy/pdf-stamper/
-  by Jason Yates
-
 == DESCRIPTION:
 
 Fill out PDF forms (templates) using iText's PdfStamper.
+
+Features include:
+
+* Text fields
+* Checkboxes
+* Circles, ellipses, rectangles
+* PDF-417 Barcodes
 
 == CAVEAT:
 
@@ -39,13 +37,14 @@ or Acrobat Professional to create the templates.
 
 == CODE:
 
-  git clone http://github.com/jaywhy/pdf-stamper/
+  git clone http://github.com/technicool/pdf-stamper/
 
 == CONTRIBUTORS:
 
 Paul Schreiber
 Joe Steele
 Ronny Hanssen
+Marshall Anschutz
 
 == LICENSE:
 

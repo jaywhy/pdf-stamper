@@ -46,6 +46,10 @@ module PDF
       @black = @gray_color.new(0.0)
       @canvas = @stamp.getOverContent(1)
     end
+    
+    def is_checkbox(field_type)
+      field_type == @acrofields.FIELD_TYPE_CHECKBOX
+    end
 
     # Set a button field defined by key and replaces with an image.
     def image(key, image_path)
