@@ -1,4 +1,8 @@
-== DESCRIPTION:
+# pdf/stamper - PDF Templates
+  http://github.com/jaywhy/pdf-stamper/
+  by Jason Yates
+
+## Description
 
 Fill out PDF forms (templates) using iText's PdfStamper.
 
@@ -9,48 +13,56 @@ Features include:
 * Circles, ellipses, rectangles
 * PDF-417 Barcodes
 
-== CAVEAT:
-
 You have to use JRuby or RJB. You need Adobe LiveCycle Designer
 or Acrobat Professional to create the templates.
 
-== EXAMPLE:
-  pdf = PDF::Stamper.new("my_template.pdf")
+## Example
+    pdf = PDF::Stamper.new("my_template.pdf")
+  
+    pdf.text :first_name, "Jason"
+    pdf.text :last_name, "Yates"
+  
+    pdf.image :photo, "photo.jpg"
+    pdf.checkbox :hungry
+    pdf.ellipse(140, 380, 50, 13)
+    pdf.rectangle(140, 380, 50, 13)
+    pdf.circle(140, 380)
+    
+    # PDF-417 barcodes
+    pdf.barcode("PDF417", "2d_barcode", "Barcode data...", AspectRatio: 0.5)
+    
+    pdf.save_as "my_output.pdf"
 
-  pdf.text :first_name, "Jason"
-  pdf.text :last_name, "Yates"
+Here is how you use it in Rails.
 
-  pdf.image :photo, "photo.jpg"
-  pdf.checkbox :hungry
-  pdf.ellipse(140, 380, 50, 13)
-  pdf.rectangle(140, 380, 50, 13)
-  pdf.circle(140, 380)
+    # In your controller.
+    def send 
+      pdf = PDF::Stamper.new("sample.pdf") 
+      pdf.text :first_name, "Jason"
+      pdf.text :last_name, "Yates" 
+      send_data(pdf.to_s, :filename => "output.pdf", :type => "application/pdf",:disposition => "inline")
+    end   
 
-  # *** NEW *** !!!! barcodes...
-  pdf.barcode("PDF417", "2d_barcode", "Barcode data...", aspect_ratio: 0.5)
-
-  pdf.save_as "my_output.pdf"
-
-== INSTALL:
+## Installation
 
   gem install pdf-stamper
 
-== CODE:
+## Code
 
-  git clone http://github.com/technicool/pdf-stamper/
+  git clone http://github.com/jaywhy/pdf-stamper/
 
-== CONTRIBUTORS:
+## Contributors
 
 Paul Schreiber
 Joe Steele
 Ronny Hanssen
 Marshall Anschutz
 
-== LICENSE:
+## License
 
 (The MIT License)
 
-Copyright (c) 2007-2010 Jason Yates
+Copyright (c) 2007-2013 Jason Yates
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

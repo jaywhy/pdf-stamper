@@ -1,23 +1,25 @@
 # = pdf/stamper.rb -- PDF template stamping.
 #
-#  Copyright (c) 2007-2009 Jason Yates
+#  Copyright (c) 2007-2012 Jason Yates
 
 require 'rbconfig'
 require 'fileutils'
-require 'tmpdir'
-require 'active_support/inflector/methods'
+#require 'tmpdir'
+#require 'active_support/inflector/methods'
 
 include FileUtils
 
+if RUBY_PLATFORM =~ /java/ # ifdef to check if your using JRuby
+  require 'pdf/stamper/jruby'
+else
+  require 'pdf/stamper/rjb'
+end
+
 module PDF
   class Stamper
-    VERSION = "0.3.4"
+    VERSION = "0.6.0"
     
-    if RUBY_PLATFORM =~ /java/ # ifdef to check if your using JRuby
-      require 'pdf/stamper/jruby'
-    else
-      require 'pdf/stamper/rjb'
-    end
+    
     # PDF::Stamper provides an interface into iText's PdfStamper allowing for the
     # editing of existing PDFs as templates. PDF::Stamper is not a PDF generator,
     # it allows you to edit existing PDFs and use them as templates.
@@ -36,7 +38,36 @@ module PDF
     # pdf.image :photo, "photo.jpg"
     # pdf.checkbox :hungry
     # pdf.save_as "my_output"
-    
+
+    def initialize(pdf = nil)
+      template(pdf) if ! pdf.nil?
+    end
+  
+    def template(template)
+      reader = PdfReader.new(template)
+      @baos = ByteArrayOutputStream.new
+      @stamp = PdfStamper.new(reader, @baos)
+      @form = @stamp.getAcroFields()
+      @canvas = @stamp.getOverContent(1)
+    end
+  
+    # Set a button field defined by key and replaces with an image.
+    def image(key, image_path)
+      # Idea from here http://itext.ugent.be/library/question.php?id=31 
+      # Thanks Bruno for letting me know about it.
+      img = Image.getInstance(image_path)
+      img_field = @form.getFieldPositions(key.to_s)
+
+      rect = Rectangle.new(img_field[1], img_field[2], img_field[3], img_field[4])
+      img.scaleToFit(rect.width, rect.height)
+      img.setAbsolutePosition(
+        img_field[1] + (rect.width - img.scaledWidth) / 2,
+        img_field[2] + (rect.height - img.scaledHeight) /2
+      )
+
+      cb = @stamp.getOverContent(img_field[0].to_i)
+      cb.addImage(img)
+    end
     
     # PDF::Stamper allows setting metadata on the created PDF by passing
     # the parameters to the set_more_info function. Our implementation here
@@ -62,6 +93,23 @@ module PDF
     def text(key, value)
       @form.setField(key.to_s, value.to_s) # Value must be a string or itext will error.
     end
+
+    
+    # Takes the PDF output and sends as a string.
+    #
+    # Here is how to use it in rails:
+    #
+    # def send 
+    #     pdf = PDF::Stamper.new("sample.pdf") 
+    #     pdf.text :first_name, "Jason"
+    #     pdf.text :last_name, "Yates" 
+    #     send_data(pdf.to_s, :filename => "output.pdf", :type => "application/pdf",:disposition => "inline")
+    # end   
+    def to_s
+      fill
+      String.from_java_bytes(@baos.toByteArray)
+    end
+
 
     # Set a checkbox to checked
     def checkbox(key)
