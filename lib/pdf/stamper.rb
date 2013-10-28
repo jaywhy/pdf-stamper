@@ -4,30 +4,22 @@
 
 require 'rbconfig'
 require 'fileutils'
-require 'tmpdir'
+#require 'tmpdir'
+#require 'active_support/inflector/methods'
 
 include FileUtils
 
 if RUBY_PLATFORM =~ /java/ # ifdef to check if your using JRuby
-  $:.unshift(File.join(File.dirname(__FILE__), '..', '..', '..', 'ext'))
-  require 'java'
-  require 'iText-4.2.0.jar'
-  
-  java_import 'java.io.FileOutputStream'
-  java_import 'java.io.ByteArrayOutputStream'
-  java_import 'com.lowagie.text.pdf.AcroFields'
-  java_import 'com.lowagie.text.pdf.PdfReader'
-  java_import 'com.lowagie.text.pdf.PdfStamper'
-  java_import 'com.lowagie.text.Image'
-  java_import 'com.lowagie.text.Rectangle'
-  java_import 'com.lowagie.text.pdf.GrayColor'
+  require 'pdf/stamper/jruby'
 else
   require 'pdf/stamper/rjb'
 end
 
 module PDF
   class Stamper
-    VERSION = "0.5"
+    VERSION = "0.6.0"
+    
+    
     # PDF::Stamper provides an interface into iText's PdfStamper allowing for the
     # editing of existing PDFs as templates. PDF::Stamper is not a PDF generator,
     # it allows you to edit existing PDFs and use them as templates.
@@ -77,6 +69,32 @@ module PDF
       cb.addImage(img)
     end
     
+    # PDF::Stamper allows setting metadata on the created PDF by passing
+    # the parameters to the set_more_info function. Our implementation here
+    # is slightly different from iText, in that we only receive a single key/value
+    # pair at a time, instead of a Map<string,string> since that is slightly
+    # more complex to bridge properly from ruby to java.
+    # 
+    # Possible keys include "Creator". All values here are strings.
+    # 
+    def set_metadata(key, value)
+      params = java.util.HashMap.new()
+      params.put(key.to_s, value)
+      @stamp.setMoreInfo(params)
+    end
+    
+    # If you want to have iText reset some of the metadata, this function will
+    # cause iText to use its default xml metadata.
+    def reset_xmp_metadata()
+      @stamp.setXmpMetadata("".to_java_bytes)
+    end
+    
+    # Set a textfield defined by key and text to value
+    def text(key, value)
+      @form.setField(key.to_s, value.to_s) # Value must be a string or itext will error.
+    end
+
+    
     # Takes the PDF output and sends as a string.
     #
     # Here is how to use it in rails:
@@ -92,15 +110,11 @@ module PDF
       String.from_java_bytes(@baos.toByteArray)
     end
 
-    # Set a textfield defined by key and text to value.
-    def text(key, value)
-      @form.setField(key.to_s, value.to_s) # Value must be a string or itext will error.
-    end
 
     # Set a checkbox to checked
     def checkbox(key)
       field_type = @form.getFieldType(key.to_s)
-      return unless field_type == @acrofields.FIELD_TYPE_CHECKBOX
+      return unless is_checkbox(field_type)
 
       all_states = @form.getAppearanceStates(key.to_s)
       yes_state = all_states.reject{|x| x == "Off"}
@@ -112,7 +126,7 @@ module PDF
     # Get checkbox values
     def get_checkbox_values(key)
       field_type = @form.getFieldType(key.to_s)
-      return unless field_type == @acrofields.FIELD_TYPE_CHECKBOX
+      return unless is_checkbox(field_type)
 
       @form.getAppearanceStates(key.to_s)
     end
@@ -128,8 +142,42 @@ module PDF
     def rectangle(x, y,  width, height)
       @canvas.rectangle(x, y, width, height)
     end
+
+    # Example
+    # barcode("PDF417", "2d_barcode", "Barcode data...", AspectRatio: 0.5)
+    def barcode(format, key, value, opts = {})
+      bar = create_barcode(format)
+      bar.setText(value)
+      opts.each do |name, opt|
+        #bar.send("set#{name.to_s.camelize}", opt) #Camelize is not present outside of Rails by default
+        bar.send("set#{name.to_s}", opt)
+      end
+
+      coords = @form.getFieldPositions(key.to_s)
+      rect = create_rectangle(coords)
+
+      barcode_img = bar.getImage
+      barcode_img.scalePercent(100, 100 * bar.getYHeight)
+      barcode_img.setAbsolutePosition(
+          coords[1] + (rect.getWidth - barcode_img.getScaledWidth) / 2,
+          coords[2] + (rect.getHeight - barcode_img.getScaledHeight) / 2
+      )
+
+      cb = @stamp.getOverContent(coords[0].to_i)
+      cb.addImage(barcode_img)
+    end
+
+    # this has to be called *before* setting field values
+    def set_font(font_name)
+      itr = @form.getFields.keySet.iterator
+      while itr.hasNext
+        field = itr.next
+        @form.setFieldProperty(field, 'textfont', create_font(font_name), nil)
+      end
+    end
     
-    # Saves the PDF into a file defined by path given.
+    # Saves the PDF into a file defined by path given. If you want to save
+    # to a string/buffer, just use .to_s directly.
     def save_as(file)
       File.open(file, "wb") { |f| f.write to_s }
     end

@@ -6,6 +6,16 @@
 
 Fill out PDF forms (templates) using iText's PdfStamper.
 
+Features include:
+
+* Text fields
+* Checkboxes
+* Circles, ellipses, rectangles
+* PDF-417 Barcodes
+
+You have to use JRuby or RJB. You need Adobe LiveCycle Designer
+or Acrobat Professional to create the templates.
+
 ## Example
     pdf = PDF::Stamper.new("my_template.pdf")
   
@@ -17,7 +27,10 @@ Fill out PDF forms (templates) using iText's PdfStamper.
     pdf.ellipse(140, 380, 50, 13)
     pdf.rectangle(140, 380, 50, 13)
     pdf.circle(140, 380)
-  
+    
+    # PDF-417 barcodes
+    pdf.barcode("PDF417", "2d_barcode", "Barcode data...", AspectRatio: 0.5)
+    
     pdf.save_as "my_output.pdf"
 
 Here is how you use it in Rails.
@@ -36,7 +49,6 @@ Here is how you use it in Rails.
 
 ## Code
 
-
   git clone http://github.com/jaywhy/pdf-stamper/
 
 ## Contributors
@@ -44,12 +56,13 @@ Here is how you use it in Rails.
 Paul Schreiber
 Joe Steele
 Ronny Hanssen
+Marshall Anschutz
 
 ## License
 
 (The MIT License)
 
-Copyright (c) 2007-2012 Jason Yates
+Copyright (c) 2007-2013 Jason Yates
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
